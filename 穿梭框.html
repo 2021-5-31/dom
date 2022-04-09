@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .container {
+            overflow: hidden;
+            width: 550px;
+            margin: 0 auto;
+        }
+
+        .container .left,
+        .container .right {
+            float: left;
+            margin: 0 30px;
+        }
+
+        .container select {
+            width: 100%;
+            height: 200px;
+        }
+
+        .container .mid {
+            padding-top: 70px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left">
+            <h2>快乐</h2>
+            <select id="sel1" multiple>
+                <option value="1">冰镇可乐</option>
+                <option value="2">奶茶</option>
+                <option value="3">吃鸡</option>
+                <option value="4">足球</option>
+                <option value="5">煲汤</option>
+            </select>
+        </div>
+        <div class="left mid">
+            <p>
+                <button title="右移动选中的">&gt;&gt;</button>
+            </p>
+            <p>
+                <button title="右移动全部">&gt;&gt;|</button>
+            </p>
+            <p>
+                <button title="左移动选中的">&lt;&lt;</button>
+            </p>
+            <p>
+                <button title="左移动全部">|&lt;&lt;</button>
+            </p>
+        </div>
+        <div class="right">
+            <h2>我的快乐</h2>
+            <select id="sel2" multiple>
+                <option value="6">代码</option>
+            </select>
+        </div>
+
+    </div>
+    <script>
+        const select1 = document.getElementById('sel1')
+        const select2 = document.getElementById('sel2')
+        const option1 = select1.getElementsByTagName('option')
+        const option2 = select2.getElementsByTagName('option')
+        let btns = document.querySelectorAll('button')
+        btns = Array.from(btns)
+        function getSelected(options) {
+            return Array.from(options).filter(item => item.selected)
+        }
+        function move(option,target) {
+            const frag = document.createDocumentFragment()
+            Array.from(option).forEach(item => {
+                item.selected = false
+                frag.appendChild(item)
+            })
+            target.appendChild(frag)
+        }
+        btns.forEach(item => {
+            item.onclick = function () {
+                // if (this === btns[0]) {
+                //     if (select1.selectedIndex === -1) return
+                //     const newOption = select1.querySelectorAll('option')
+                //     const cloneNode = newOption[select1.selectedIndex].cloneNode(true)
+                //     newOption[select1.selectedIndex].remove()
+                //     select2.appendChild(cloneNode)
+                // } else if (this === btns[1]) {
+                //     let newOption = select1.querySelectorAll('option')
+                //     if (newOption.length === 0) return
+                //     newOption = Array.from(newOption)
+                //     newOption.forEach(item => {
+                //         const cloneNode = item.cloneNode(true)
+                //         item.remove()
+                //         select2.appendChild(cloneNode)
+                //     })
+                // } else if (this === btns[2]) {
+                //     if (select2.selectedIndex === -1) return
+                //     const newOption = select2.querySelectorAll('option')
+                //     const cloneNode = newOption[select2.selectedIndex].cloneNode(true)
+                //     newOption[select2.selectedIndex].remove()
+                //     select1.appendChild(cloneNode)
+                // } else {
+                //     let newOption = select2.querySelectorAll('option')
+                //     if (newOption.length === 0) return
+                //     newOption = Array.from(newOption)
+                //     newOption.forEach(item => {
+                //         const cloneNode = item.cloneNode(true)
+                //         item.remove()
+                //         select1.appendChild(cloneNode)
+                //     })
+                // }
+                if (this === btns[0]) {
+                    const selectedOption = getSelected(option1)
+                    move(selectedOption,select2)
+                }else if (this === btns[1]) {
+                    move(option1,select2)
+                }
+                else if (this === btns[2]) {
+                    const selectedOption = getSelected(option2)
+                    move(selectedOption,select1)
+                }else{
+                    move(option2,select1)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

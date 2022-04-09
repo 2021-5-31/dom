@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        span{
+            min-width: 50px;
+            display: inline-block;
+            text-align: center;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        库存的最小值为0
+    </p>
+    <div>
+        库存：
+        <button data-add="-1000">-1000</button>
+        <button data-add="-100">-100</button>
+        <button data-add="-10">-10</button>
+        <button data-add="-1">-</button>
+        <span>0</span>
+        <button data-add="1">+</button>
+        <button data-add="10">+10</button>
+        <button data-add="100">+100</button>
+        <button data-add="1000">+1000</button>
+    </div>
+    <script>
+        let btns = document.querySelectorAll('button')
+        const inventoryDom = document.querySelector('span')
+        let inventory = 0
+        btns = Array.from(btns)
+        btns.forEach(item=>{
+            item.onclick = function(){
+                // if(this === btns[0]){
+                //     inventory -= 1000
+                // }else if(this === btns[1]){
+                //     inventory -= 100
+                // }else if(this === btns[2]){
+                //     inventory -= 10
+                // }else if(this === btns[3]){
+                //     inventory -= 1
+                // }else if(this === btns[4]){
+                //     inventory += 1
+                // }else if(this === btns[5]){
+                //     inventory += 10
+                // }else if(this === btns[6]){
+                //     inventory += 100
+                // }else{
+                //     inventory += 1000
+                // }
+                const value = +item.dataset.add
+                inventory += value
+                if(inventory<0){
+                    inventory = 0
+                }
+                inventoryDom.innerText = inventory
+            }
+        })
+    </script>
+</body>
+</html>
