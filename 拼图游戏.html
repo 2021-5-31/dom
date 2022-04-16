@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const gameConfig = {
+      width: 400,
+      height: 400,
+      row: 3,
+      col: 3,
+      imgUrl: './img/cute.jpg',
+      isGameOver: false
+    }
+    gameConfig.blockWidth = parseInt(gameConfig.width / gameConfig.col)
+    gameConfig.blockHeight = parseInt(gameConfig.height / gameConfig.row)
+    function init() {
+      getContainerDom()
+      getBlocks()
+      showBlocks()
+      shuffle()
+      handleClick()
+    }
+    function getContainerDom() {
+      const div = document.createElement('div')
+      div.className = 'container'
+      div.style.width = gameConfig.width + 'px'
+      div.style.height = gameConfig.height + 'px'
+      div.style.border = '1px solid #8c8c8c'
+      div.style.position = 'relative'
+      document.body.appendChild(div)
+    }
+    class Block {
+      constructor(left, top, isVisible) {
+        this.left = left
+        this.top = top
+        this.width = gameConfig.blockWidth
+        this.height = gameConfig.blockHeight
+        this.correctLeft = this.left
+        this.correctTop = this.top
+        this.dom = document.createElement('div')
+        this.dom.style.position = 'absolute'
+        this.dom.style.border = '1px solid #fff'
+        this.dom.style.boxSizing = 'border-box'
+        this.dom.style.background = `url('${gameConfig.imgUrl}') no-repeat -${this.left}px -${this.top}px`
+        this.isVisible = isVisible
+        if (!isVisible) this.dom.style.display = 'none'
+        this.show()
+      }
+      show() {
+        this.dom.style.left = this.left + 'px'
+        this.dom.style.top = this.top + 'px'
+        this.dom.style.width = this.width + 'px'
+        this.dom.style.height = this.height + 'px'
+      }
+    }
+    const blockList = []
+    function getBlocks() {
+      for (let i = 0; i < gameConfig.row; i++) {
+        for (let j = 0; j < gameConfig.col; j++) {
+          let isVisible = true
+          if (i === gameConfig.row - 1 && j === gameConfig.col - 1) {
+            isVisible = false
+          }
+          const b = new Block(j * gameConfig.blockWidth, i * gameConfig.blockHeight, isVisible)
+          blockList.push(b)
+        }
+      }
+    }
+    function showBlocks() {
+      const frag = document.createDocumentFragment()
+      const containerDom = document.querySelector('.container')
+      blockList.forEach(item => {
+        frag.appendChild(item.dom)
+      })
+      containerDom.appendChild(frag)
+    }
+    function shuffle() {
+      const invisibleItem = blockList.find(item => !item.isVisible)
+      blockList.forEach((item) => {
+        exchange(item, blockList[random(0, blockList.length - 1)])
+      })
+    }
+    function exchange(b1, b2) {
+      const tempLeft = b1.left
+      b1.left = b2.left
+      b2.left = tempLeft
+      const tempTop = b1.top
+      b1.top = b2.top
+      b2.top = tempTop
+      b1.show()
+      b2.show()
+    }
+    function random(min, max) {
+      return Math.floor(Math.random() * (max + 1 - min) + min)
+    }
+    function handleClick() {
+      const invisibleItem = blockList.find(item => !item.isVisible)
+      blockList.forEach(item => {
+        item.dom.onclick = function () {
+          if (gameConfig.isGameOver) return
+          if (Math.abs((item.left) - (invisibleItem.left)) === (item.width)
+            && Math.abs((item.top) === (invisibleItem.top))
+            ||
+            Math.abs((item.top) - (invisibleItem.top)) === (item.height)
+            && Math.abs((item.left) === (invisibleItem.left))
+          ) {
+            exchange(invisibleItem, item)
+          }
+          const inCorrectPosition = blockList.filter(item => {
+            return (item.correctLeft === parseInt(item.left)
+              && item.correctTop === parseInt(item.top))
+          })
+          if (inCorrectPosition.length === 9) {
+            blockList.forEach(block => {
+              block.dom.style.border = ''
+              if (!block.isVisible) {
+                block.dom.style.display = 'block'
+              }
+            })
+            gameConfig.isGameOver = true
+            setTimeout(() => {
+              alert('s')
+            }, 0)
+          }
+        }
+      })
+    }
+
+    init()
+
+  </script>
+</body>
+
+</html>

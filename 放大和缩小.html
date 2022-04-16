@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .container{
+            overflow: hidden;
+            border: 2px solid;
+            width: 200px;
+            height: 200px;
+            position: relative;
+            line-height: 200px;
+            text-align: center;
+            font-size: 100px;
+            font-family: 宋体;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        哈
+    </div>
+    <p>
+        <button>放大</button>
+        <button>缩小</button>
+    </p>
+    <script>
+      const big = document.querySelectorAll('button')[0]
+      const small = document.querySelectorAll('button')[1]
+      const container = document.querySelector('.container')
+      big.onclick = function(){
+        let fontSize = parseInt(getComputedStyle(container).fontSize)
+        fontSize += 2
+        container.style.fontSize = fontSize + 'px'
+      }
+      small.onclick = function(){
+        let fontSize = parseInt(getComputedStyle(container).fontSize)
+        fontSize -= 2
+        container.style.fontSize = fontSize + 'px'
+      }
+    </script>
+</body>
+</html>

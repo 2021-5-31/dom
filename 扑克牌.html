@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    button {
+      position: fixed;
+      padding: 10px 30px;
+      font-size: 20px;
+      bottom: 50px;
+      margin: auto;
+      left: 50%;
+      transform: translate(-50%);
+    }
+  </style>
+</head>
+
+<body>
+  <p>
+    利用pokers文件夹中的图片，用纯JS生成图片依次排列到页面上。不允许使用样式表
+  </p>
+  <button>
+    添加
+  </button>
+  <script>
+    const btn = document.querySelector('button')
+    let num1 = 1
+    let num2 = 0
+    let div = document.createElement('div')
+    btn.onclick = function () {
+      if (num1 > 14) return
+      num2++
+      if (num2 > 4) {
+        num1++
+        num2 = 1
+        if (num1 < 15) {
+          div = document.createElement('div')
+        }
+      }
+      const img = document.createElement('img')
+      img.src = `./pokers/${num1}_${num2}.jpg`
+      div.appendChild(img)
+      document.body.appendChild(div)
+      if (num1 > 13) {
+        num2 = 4
+      }
+    }
+  </script>
+</body>
+
+</html>
