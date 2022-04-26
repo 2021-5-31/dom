@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container {
+      position: relative;
+    }
+
+    .container div {
+      width: 25px;
+      height: 27px;
+      background: url('./img/empty.png');
+      position: absolute;
+      top: 0;
+    }
+
+    #div1 {
+      left: 0;
+    }
+
+    #div2 {
+      left: 30px;
+    }
+
+    #div3 {
+      left: 30px;
+    }
+
+    #div4 {
+      left: 30px;
+    }
+
+    #div5 {
+      left: 30px;
+    }
+    span{
+      width: 40px;
+      height: 27px;
+      position: absolute;
+      top: 0;
+      left: 150px;
+      line-height: 25px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div data-star="1" id="div1">
+      <div data-star="2" id="div2">
+        <div data-star="3" id="div3">
+          <div data-star="4" id="div4">
+            <div data-star="5" id="div5"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span></span>
+  </div>
+  <script>
+    const appraise = ['很差','较差','一般','较好','很好']
+    const divs = document.querySelectorAll('.container div')
+    const spanText = document.querySelector('.container span')
+    function leaveHandler(e){
+      e.target.style.background = `url('./img/empty.png')`
+      spanText.innerText = ''
+    }
+    function clear(children){
+      if(!children || children.length === 0){
+        return
+      }
+      children[0].style.background = `url('./img/empty.png')`
+      clear(children[0].children)
+    }
+    Array.from(divs).forEach(item => {
+      item.addEventListener('mouseover', (e) => {
+        clear(e.target.children)
+        item.style.background = `url('./img/shining.png')`
+        spanText.innerText = appraise[e.target.dataset.star - 1]
+        item.addEventListener('mouseleave', leaveHandler)
+      })
+      item.addEventListener('click',()=>{
+        item.removeEventListener('mouseleave',leaveHandler)
+      })
+    })
+  </script>
+</body>
+
+</html>

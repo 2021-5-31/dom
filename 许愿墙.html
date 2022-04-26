@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      position: relative;
+    }
+
+    .input {
+      position: fixed;
+      left: 50%;
+      bottom: 0;
+      border: 1px solid;
+      width: 250px;
+      height: 30px;
+      border-radius: 5px;
+      transform: translate(-50%, -150px);
+    }
+
+    .text {
+      color: #fff;
+      padding: 20px 20px;
+      display: block;
+      user-select: none;
+    }
+
+    .btn {
+      position: absolute;
+      right: 3px;
+      top: 0;
+      cursor: pointer;
+      user-select: none;
+    }
+  </style>
+</head>
+
+<body>
+  <input class="input" type="text" placeholder="心愿：">
+
+</body>
+<script>
+  const boxConfig = {
+    width: 200,
+    height: 200
+  }
+  class Box {
+    constructor(width, height, left, top, color, text) {
+      this.width = width
+      this.height = height
+      this.left = left
+      this.top = top
+      this.color = color
+      this.text = text
+      this.dom = document.createElement('div')
+      this.dom.className = 'box'
+      this.dom.style.position = 'absolute'
+      this.dom.style.borderRadius = '10px'
+      this.dom.style.userSelect= 'none';
+      this.dom.style.backgroundColor = '#' + color
+      this.dom.innerHTML = `<span class='text'>${this.text}</span>
+                            <span class='btn'>X</span>`
+      this.show()
+    }
+    show() {
+      this.dom.style.width = this.width + 'px'
+      this.dom.style.height = this.height + 'px'
+      this.dom.style.left = this.left + 'px'
+      this.dom.style.top = this.top + 'px'
+    }
+  }
+  const input = document.querySelector('.input')
+  const body = document.body
+  let zIndex = 1
+  input.onkeyup = function (e) {
+    const value = this.value.trim()
+    if (e.key === 'Enter' && value) {
+      createBox(value)
+      this.value = ''
+    }
+  }
+  window.onclick = function (e) {
+    if (e.target.className === 'btn') {
+      e.target.parentElement.remove()
+    }
+  }
+  // 拖拽box
+  window.addEventListener('mousedown', (e) => {
+    // if (e.target.className === 'box' || e.target.className === 'text' || e.target.className === 'btn') {
+    //   let target = null
+    //   let offsetX = null
+    //   let offsetY = null
+    //   if (e.target.className === 'text') {
+    //     offsetX = e.offsetX
+    //     offsetY = e.offsetY
+    //     target = e.target.parentElement
+    //   } else if (e.target.className === 'btn') {
+    //     const style = window.getComputedStyle(e.target)
+    //     offsetX = e.offsetX + parseInt(style.left)
+    //     offsetY = e.offsetY + parseInt(style.top)
+    //     target = e.target.parentElement
+    //   } else {
+    //     target = e.target
+    //     offsetX = e.offsetX
+    //     offsetY = e.offsetY
+    //   }
+    //   if (offsetX < 0) {
+    //     offsetX = 0
+    //   }
+    //   window.addEventListener('mousemove', mousemoveEvent)
+    //   window.addEventListener('mouseup', () => {
+    //     window.removeEventListener('mousemove', mousemoveEvent)
+    //   })
+    //   function mousemoveEvent(e) {
+    //     if (e.pageX - offsetX < 0) {
+    //       offsetX = e.pageX
+    //     }
+    //     if (e.pageX + (boxConfig.width - offsetX) > document.documentElement.clientWidth) {
+    //       offsetX = boxConfig.width - document.documentElement.clientWidth + e.pageX
+    //     }
+    //     if (e.pageY - offsetY < 0) {
+    //       offsetY = e.pageY
+    //     }
+    //     if (e.pageY + (boxConfig.height - offsetY) > input.getBoundingClientRect().top) {
+    //       offsetY = boxConfig.height - input.getBoundingClientRect().top + e.pageY
+    //     }
+    //     target.style.left = e.pageX - offsetX + 'px'
+    //     target.style.top = e.pageY - offsetY + 'px'
+    //   }
+    // }
+
+    const boxDom = getboxDom(e.target)
+    if (!boxDom) return
+    boxDom.style.zIndex = zIndex;
+    zIndex++;
+    const pageX = e.pageX
+    const pageY = e.pageY
+    const left = parseFloat(boxDom.style.left)
+    const top = parseFloat(boxDom.style.top)
+    function mousemoveEvent(e) {
+      const disX = e.pageX - pageX
+      const disY = e.pageY - pageY
+      let newLeft = left + disX
+      let newTop = top + disY
+      if (newLeft < 0) {
+        newLeft = 0
+      }
+      if (newLeft + boxConfig.width > document.documentElement.clientWidth) {
+        newLeft = document.documentElement.clientWidth - boxConfig.width
+      }
+      if (newTop < 0) {
+        newTop = 0
+      }
+      if (newTop + boxConfig.height > input.getBoundingClientRect().top) {
+        newTop = input.getBoundingClientRect().top - boxConfig.height
+      }
+      boxDom.style.left = newLeft + 'px'
+      boxDom.style.top = newTop + 'px'
+    }
+    window.addEventListener('mousemove', mousemoveEvent)
+    window.addEventListener('mouseup', () => {
+      window.removeEventListener('mousemove', mousemoveEvent)
+    })
+  })
+
+  function createBox(value) {
+    const position = getRandomPosition()
+    const color = getRandomColor()
+    const text = value
+    const box = new Box(boxConfig.width, boxConfig.height, position.left, position.top, color, text)
+    body.appendChild(box.dom)
+  }
+  function getRandomPosition() {
+    const clientWidth = parseInt(document.documentElement.clientWidth)
+    const maxHeight = parseInt(input.getBoundingClientRect().top)
+    const left = getRandomNumber(0, clientWidth - boxConfig.width)
+    const top = getRandomNumber(0, maxHeight - boxConfig.height)
+    return {
+      left,
+      top
+    }
+  }
+  function getboxDom(target) {
+    if (target.className === 'box') {
+      return target
+    }
+    if (target.parentElement && target.parentElement.className === 'box') {
+      return target.parentElement
+    }
+  }
+  function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max + 1 - min) + min)
+  }
+  function getRandomColor() {
+    return Math.random().toString(16).substr(2, 6)
+  }
+  // 视口宽高改变，box跟着比例改变位置
+  let viewportWidth = document.documentElement.clientWidth
+  let viewportHeight = document.documentElement.clientHeight
+  window.onresize = function () {
+    const newViewportWidth = document.documentElement.clientWidth
+    const newViewportHeight = document.documentElement.clientHeight
+    disWidth = newViewportWidth - viewportWidth
+    disHeight = newViewportHeight - viewportHeight
+    const allBoxDom = body.querySelectorAll('.box')
+    Array.from(allBoxDom).forEach(box => {
+      const left = parseFloat(box.style.left)
+      const right = viewportWidth - left - boxConfig.width
+      const newLeft = left + left / (left + right) * disWidth
+      box.style.left = newLeft + 'px'
+
+      const top = parseFloat(box.style.top)
+      const bottom = viewportHeight - top - boxConfig.height
+      const newTop = top + top / (top + bottom) * disHeight
+      box.style.top = newTop + 'px'
+    })
+    viewportWidth = newViewportWidth
+    viewportHeight = newViewportHeight
+  }
+  createBox('啊哈哈哈哈')
+</script>
+
+</html>
