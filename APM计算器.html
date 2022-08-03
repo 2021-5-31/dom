@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    body {
+      text-align: center;
+    }
+
+    p {
+      font-size: 2em;
+    }
+  </style>
+</head>
+
+<body>
+  <p>
+    倒计时：<span>5</span>
+  </p>
+  <p>
+    点击数：<span>0</span>
+  </p>
+  <p>
+    <button>点击</button>
+    <button>重置</button>
+  </p>
+  <script>
+    const click = document.querySelectorAll('button')[0]
+    const reset = document.querySelectorAll('button')[1]
+    const time = document.querySelectorAll('span')[0]
+    const clickNum = document.querySelectorAll('span')[1]
+    let duration = +time.innerText
+    let countdown = +time.innerText
+    let timer = null
+    let num = 0
+    click.onclick = function () {
+      if (countdown === 0) return
+      if (!timer) {
+        timer = setInterval(() => {
+          countdown--
+          time.innerText = countdown
+          if (countdown === 0) {
+            clearInterval(timer)
+            timer = null
+          }
+        }, 1000)
+      }
+      num++
+      clickNum.innerText = num
+    }
+    reset.onclick = function () {
+      time.innerText = duration
+      clickNum.innerText = 0
+      countdown = duration
+      num = 0
+    }
+  </script>
+</body>
+
+</html>

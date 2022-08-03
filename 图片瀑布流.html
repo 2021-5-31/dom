@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  .container {
+    width: 80%;
+    margin: 0 auto;
+    border: 1px solid;
+    overflow: hidden;
+  }
+</style>
+
+<body>
+  <div class="container">
+  </div>
+  <script>
+    const debounce = (cb, delay) => {
+      let timer = null
+      return function () {
+        if (timer) {
+          clearTimeout(timer)
+        }
+        timer = setTimeout(cb, delay)
+      }
+    }
+    const pictureFall = (options) => {
+      const defaultOptions = {
+        gap: 15,
+        container: document.body,
+        pictureWidth: 180,
+        pictureList: []
+      }
+      options = Object.assign({}, defaultOptions, options)
+      const containerStyle = getComputedStyle(options.container)
+      if (containerStyle.position === 'static') {
+        options.container.style.position = 'relative'
+      }
+      const divs = []
+      const setPicPosition = () => {
+        let rowNum = (options.container.clientWidth + options.gap) / (options.pictureWidth + options.gap)
+        rowNum = Math.floor(rowNum)
+        const newGap = (options.container.clientWidth - rowNum * options.pictureWidth) / (rowNum - 1)
+        const pictureArr = new Array(rowNum)
+        pictureArr.fill(0)
+        divs.forEach(div => {
+          const shortestPicture = Math.min(...pictureArr)
+          const index = pictureArr.indexOf(shortestPicture)
+          div.style.left = index * (options.pictureWidth + newGap) + 'px'
+          div.style.top = shortestPicture + 'px'
+          div.style.transition = '.5s'
+          pictureArr[index] += div.clientHeight + newGap
+        })
+        const longestPicture = Math.max(...pictureArr)
+        options.container.style.height = longestPicture - newGap + 'px'
+      }
+      const createImgDom = (src) => {
+        const div = document.createElement('div')
+        div.style.position = 'absolute'
+        div.style.fontSize = 0
+        const img = document.createElement('img')
+        img.src = src
+        img.style.width = options.pictureWidth + 'px'
+        img.onload = fn
+        div.appendChild(img)
+        divs.push(div)
+        options.container.appendChild(div)
+      }
+      const fn = debounce(setPicPosition,300)
+      window.onresize = fn
+      options.pictureList.forEach(imgSrc => {
+        createImgDom(imgSrc)
+      })
+      // window.onresize = fn
+    }
+    const container = document.querySelector('.container')
+    const pictureList = []
+    for (let i = 0; i < 40; i++) {
+      pictureList.push(`./img/图片瀑布流/${i}.jpg`)
+    }
+    pictureFall({
+      container,
+      pictureList
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .move {
+      position: fixed;
+      left: 100px;
+      top: 100px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="move">
+    <!-- 该div自动向右下移动，遇到边界反弹 -->
+  </div>
+  <script>
+    const box = document.querySelector('.move')
+    const width = box.getBoundingClientRect().width
+    const height = box.getBoundingClientRect().height
+    let offsetTop = 3
+    let offsetLeft = 3
+    setInterval(() => {
+      const style = window.getComputedStyle(box)
+      let boxTop = parseFloat(style.top)
+      let boxLeft = parseFloat(style.left)
+      if (boxTop + height >= document.documentElement.clientHeight || boxTop < 0) {
+        offsetTop = -offsetTop
+      }
+      if (boxLeft + width >= document.documentElement.clientWidth || boxLeft < 0) {
+        offsetLeft = -offsetLeft
+      }
+      newTop = boxTop + offsetTop
+      newLeft = boxLeft + offsetLeft
+      box.style.top = newTop + 'px'
+      box.style.left = newLeft + 'px'
+    }, 10)
+  </script>
+</body>
+
+</html>
