@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  ul {
+    height: 30px;
+    overflow: hidden;
+  }
+
+  li {
+    height: 30px;
+    line-height: 30px;
+    list-style: none;
+  }
+</style>
+
+<body>
+  <ul>
+    <li>1.Lorem </li>
+    <li>2.ipsum </li>
+    <li>3.dolor</li>
+    <li>4.sit</li>
+  </ul>
+  <script src="./动画插件.js"></script>
+  <script>
+    const ul = document.querySelector('ul')
+    const lis = document.querySelectorAll('li')
+    const li = lis[0].cloneNode(true)
+    ul.appendChild(li)
+    const height = li.clientHeight
+    let sTop = 0
+    setInterval(() => {
+      const animation = new Animation({
+        total: 300,
+        beginValue: {
+          scrollTop: sTop
+        },
+        endValue: {
+          scrollTop: sTop + height
+        },
+        onMove() {
+          sTop = this.currentValue.scrollTop
+          ul.scrollTop = sTop
+        },
+        onStop() {
+          if(sTop === ul.scrollHeight - height){
+            sTop = 0
+            ul.scrollTop = sTop
+          }
+        }
+      })
+      animation.start()
+    }, 1000)
+  </script>
+</body>
+
+</html>
