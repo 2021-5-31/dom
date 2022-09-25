@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      height: 5000px;
+    }
+
+    .common {
+      width: 350px;
+      height: 350px;
+      margin-bottom: 10px;
+      border: 1px solid;
+      display: flex;
+    }
+
+    .item {
+      width: 100px;
+      height: 100px;
+      background: red;
+    }
+
+    .container1 {
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-content: space-around;
+    }
+
+    .container2 {
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .container2 .item:last-child {
+      align-self: flex-end;
+    }
+
+    .container3 {
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .container3 .item:nth-child(2n) {
+      align-self: center;
+    }
+
+    .container3 .item:last-child {
+      align-self: flex-end;
+    }
+
+    .container4 {
+      flex-wrap: wrap;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .container4 .row,
+    .container4 .col {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .container5 {
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .container5 .header,
+    .container5 .footer {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .container5 .main {
+      align-self: center;
+    }
+
+    .container6 {
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .container6 .row,
+    .container6 .col {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .container7 {
+      resize: horizontal;
+      overflow: hidden;
+    }
+
+    .container7 .item:first-child {
+      background: green;
+      flex: 0 0 auto;
+    }
+
+    .container7 .item:nth-child(2) {
+      flex: 1 1 auto;
+    }
+
+    .container7 .item:nth-child(3) {
+      background: blue;
+      flex: 0 0 auto;
+    }
+
+    .container8 {
+      resize: horizontal;
+      overflow: hidden;
+      flex-direction: column;
+    }
+
+    .container8 .header {
+      height: 100px;
+      background: aquamarine;
+    }
+
+    .container8 .footer {
+      height: 100px;
+      background: darkkhaki;
+    }
+
+    .container8 .main {
+      flex: 1 1 auto;
+      display: flex;
+    }
+
+    .container8 .main .left {
+      flex: 1 1 auto;
+      /* flex: 1 1 20%; */
+      background: darkgreen;
+    }
+
+    .container8 .main .right {
+      flex: 2 2 auto;
+      /* flex: 1 1 80%; */
+      background: dodgerblue;
+    }
+
+    .container9 {
+      resize: both;
+      overflow: hidden;
+      flex-direction: column;
+    }
+
+    .container9 .up {
+      flex: 1 1 auto;
+      display: flex;
+    }
+
+    .container9 .up .item {
+      flex: 1 1 auto;
+    }
+
+    .container9 .up .item:nth-child(1) {
+      width: auto;
+      height: auto;
+      background: darkviolet;
+    }
+
+    .container9 .up .item:nth-child(2) {
+      width: auto;
+      height: auto;
+      background: gold;
+    }
+
+    .container9 .up .item:nth-child(3) {
+      width: auto;
+      height: auto;
+      background: indianred;
+    }
+
+    .container9 .down {
+      flex: 2 2 auto;
+      display: flex;
+    }
+
+    .container9 .down .left {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      background: seagreen;
+    }
+    .container9 .down .left .item:nth-child(1){
+      flex: 1 1 auto;
+      width: auto;
+      height: auto;
+      background: darkcyan;
+    }
+    .container9 .down .left .item:nth-child(2){
+      flex: 1 1 auto;
+      width: auto;
+      height: auto;
+      background:crimson;
+    }
+    .container9 .down .right {
+      flex: 2 2 auto;
+      background: tomato
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container1 common">
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+  </div>
+  <div class="container2 common">
+    <div class="item"></div>
+    <div class="item"></div>
+  </div>
+  <div class="container3 common">
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+  </div>
+  <div class="container4 common">
+    <div class="row">
+      <div class="item"></div>
+      <div class="item"></div>
+    </div>
+    <div class="col">
+      <div class="item"></div>
+      <div class="item"></div>
+    </div>
+  </div>
+  <div class="container5 common">
+    <div class="header">
+      <div class="item"></div>
+      <div class="item"></div>
+    </div>
+    <div class="main">
+      <div class="item"></div>
+    </div>
+    <div class="footer">
+      <div class="item"></div>
+      <div class="item"></div>
+    </div>
+  </div>
+  <div class="container6 common">
+    <div class="row">
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+    </div>
+    <div class="col">
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+    </div>
+  </div>
+  <div class="container7 common">
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+  </div>
+  <div class="container8 common">
+    <div class="header">
+    </div>
+    <div class="main">
+      <div class="left"></div>
+      <div class="right"></div>
+    </div>
+    <div class="footer">
+    </div>
+  </div>
+  <div class="container9 common">
+    <div class="up">
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+    </div>
+    <div class="down">
+      <div class="left">
+        <div class="item"></div>
+        <div class="item"></div>
+      </div>
+      <div class="right">
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+
+</html>
